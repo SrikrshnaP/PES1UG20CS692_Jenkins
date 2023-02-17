@@ -3,14 +3,14 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'gcc -o main/prgm main/mycpp.cpp'
+        sh 'gcc mycpp.cpp -o prgm'
         sh 'make -C main'
         echo 'Build Stage Successful'
       }
     }
     stage('Test') {
       steps {
-        sh 'main/hello_exec'
+        sh 'prgm'
         echo 'Test Stage Successful'
       }
     }
