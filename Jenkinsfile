@@ -1,29 +1,23 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('Build') {
-            steps {
-                git 'https://github.com/SrikrshnaP/PES1UG20CS692_Jenkins.git'
-                sh 'gcc mycpp.cpp -o program'
-                archiveArtifacts artifacts: 'program'
-                build job: 'PES1UG20CS692-1', parameters: [[$class: 'StringParameterValue', name: 'executable', value: 'program']]
-            }
-        }
-        stage('Test') {
-            steps {
-                sh './program'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                sh 'echo "Deploying"'
-            }
-        }
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        sh 'gcc -o main/prgm main/mycpp.cpp'
+        sh 'make -C main'
+        echo 'Build Stage Successful'
+      }
     }
-    post {
-        failure {
-            echo 'Pipeline Failure'
-        }
+    stage('Test') {
+      steps {
+        sh 'main/hello_exec'
+        echo 'Test Stage Successful'
+      }
     }
+  }
+  post {
+    failure {
+      echo 'Pipeline Failed'
+    }
+  }
 }
